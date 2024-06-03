@@ -1,5 +1,7 @@
 // Some data to make the trick
 
+const tables = require("../../database/tables");
+
 const programs = [
   {
     id: 1,
@@ -25,16 +27,10 @@ const programs = [
 
 // Declare the action
 
-const browse = (req, res) => {
-  if (req.query.q != null) {
-    const filteredPrograms = programs.filter((program) =>
-      program.synopsis.includes(req.query.q)
-    );
+const browse = async (req, res) => {
+  const programsFromDB = await tables.program.readAll();
 
-    res.json(filteredPrograms);
-  } else {
-    res.json(programs);
-  }
+  res.json(programsFromDB);
 };
 
 const read = (req, res) => {
